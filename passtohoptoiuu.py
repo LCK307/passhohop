@@ -52,19 +52,24 @@ def calculate_permutations():
             if file_name == '':
                 file_name = 'permutations'
             # Thêm thời gian hiện tại vào tên file để tạo tên file duy nhất
-            file_name = '{}_{}'.format(file_name, datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
+            file_name = '{}_{}.txt'.format(file_name, datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
             
             # Hỏi người dùng đường dẫn tùy chỉnh
             custom_path_choice = input("Bạn có muốn lưu file vào một đường dẫn tùy chỉnh không? (y/n): ")
             if custom_path_choice.lower() == 'y':
-                file_path = input("Nhập đường dẫn bạn muốn lưu file: ")
+                custom_path = input("Nhập đường dẫn bạn muốn lưu file: ")
+                # Kiểm tra xem thư mục Documents có tồn tại trong đường dẫn tùy chỉnh không, nếu không thì tạo thư mục
+                documents_path = os.path.join(custom_path, 'Documents')
+                if not os.path.exists(documents_path):
+                    os.makedirs(documents_path)
+                file_path = os.path.join(documents_path, file_name)
             else:
                 # Xác định đường dẫn đến thư mục Documents
                 documents_path = os.path.expanduser('~/Documents')
                 # Kiểm tra xem thư mục Documents có tồn tại không, nếu không thì tạo thư mục
                 if not os.path.exists(documents_path):
                     os.makedirs(documents_path)
-                file_path = os.path.join(documents_path, '{}.txt'.format(file_name))
+                file_path = os.path.join(documents_path, file_name)
             
             with open(file_path, 'w') as f:
                 for p in permutations:
@@ -120,4 +125,3 @@ def calculate_permutations():
 
 # Gọi hàm để bắt đầu chương trình
 calculate_permutations()
-
